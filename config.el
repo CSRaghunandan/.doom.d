@@ -19,7 +19,7 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Iosevka SS08" :size 12 :weight 'regular)
+(setq doom-font (font-spec :family "Iosevka SS08" :size 12)
        doom-variable-pitch-font (font-spec :family "Iosevka SS08" :size 13))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -53,6 +53,19 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; modify doom-themes
+(after! doom-themes
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; get rid of ugly box outline in magit status windows
+  (set-face-attribute 'magit-branch-remote-head nil
+                      :box nil :weight 'bold
+                      :inherit 'magit-branch-remote)
+
+  ;; disable variable pitch fonts. I find them ugly
+  (setq doom-variable-pitch-font nil))
 
 (after! doom-modeline
   ;; enable minions mode to hide all the minor modes in mode-line
@@ -92,7 +105,7 @@
   ;; enable word counts for text based modes
   (setq doom-modeline-enable-word-count t))
 
-(use-package! treemacs
+(after! treemacs
   (setq treemacs-follow-after-init t
           treemacs-recenter-after-file-follow t
           treemacs-width 40
@@ -119,8 +132,8 @@
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t))
 
-(use-package! undo-tree
+(after! undo-tree
   (setq undo-tree-auto-save-history nil))
 
-(use-package! magit
+(after! magit
   (setq magit-display-buffer-function 'magit-display-buffer-traditional))
