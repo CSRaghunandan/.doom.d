@@ -60,9 +60,10 @@
   (doom-themes-visual-bell-config)
 
   ;; get rid of ugly box outline in magit status windows
-  (set-face-attribute 'magit-branch-remote-head nil
-                      :box nil :weight 'bold
-                      :inherit 'magit-branch-remote)
+  (with-eval-after-load 'magit
+    (set-face-attribute 'magit-branch-remote-head nil
+                        :box nil :weight 'bold
+                        :inherit 'magit-branch-remote))
 
   ;; disable variable pitch fonts. I find them ugly
   (setq doom-variable-pitch-font nil))
