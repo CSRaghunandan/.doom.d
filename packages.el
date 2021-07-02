@@ -50,4 +50,9 @@
 ;(unpin! t)
 
 (package! evil-tutor)
+
+;; hide all the minor-modes in the mode-line
 (package! minions)
+
+;; delete all white spaces in one fell swoop
+(package! hungry-delete)

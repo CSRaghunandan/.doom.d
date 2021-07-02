@@ -68,6 +68,7 @@
   ;; disable variable pitch fonts. I find them ugly
   (setq doom-variable-pitch-font nil))
 
+;; my configuration for doom-modeline
 (after! doom-modeline
   ;; enable minions mode to hide all the minor modes in mode-line
   (minions-mode)
@@ -106,35 +107,98 @@
   ;; enable word counts for text based modes
   (setq doom-modeline-enable-word-count t))
 
+;; my configuration for treemacs
 (after! treemacs
   (setq treemacs-follow-after-init t
-          treemacs-recenter-after-file-follow t
-          treemacs-width 40
-          treemacs-recenter-after-project-expand 'on-distance
-          treemacs-eldoc-display nil
-          treemacs-collapse-dirs (if (executable-find "python") 3 0)
-          treemacs-silent-refresh t
-          treemacs-eldoc-display t
-          treemacs-silent-filewatch t
-          treemacs-change-root-without-asking t
-          treemacs-sorting 'alphabetic-asc
-          treemacs-show-hidden-files t
-          treemacs-never-persist nil
-          treemacs-is-never-other-window t
-          treemacs-user-mode-line-format 'none)
+        treemacs-recenter-after-file-follow t
+        treemacs-width 40
+        treemacs-recenter-after-project-expand 'on-distance
+        treemacs-eldoc-display nil
+        treemacs-collapse-dirs (if (executable-find "python") 3 0)
+        treemacs-silent-refresh t
+        treemacs-eldoc-display t
+        treemacs-silent-filewatch t
+        treemacs-change-root-without-asking t
+        treemacs-sorting 'alphabetic-asc
+        treemacs-show-hidden-files t
+        treemacs-never-persist nil
+        treemacs-is-never-other-window t
+        treemacs-user-mode-line-format 'none)
 
-    ;; set the correct python3 executable path. This is needed for
-    ;; treemacs-git-mode extended
-    (setq treemacs-python-executable (executable-find "python"))
+  ;; set the correct python3 executable path. This is needed for
+  ;; treemacs-git-mode extended
+  (setq treemacs-python-executable (executable-find "python"))
 
-    ;; highlight current line in fringe for treemacs window
-    (treemacs-fringe-indicator-mode)
+  ;; highlight current line in fringe for treemacs window
+  (treemacs-fringe-indicator-mode)
 
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t))
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
 
 (after! undo-tree
+  ;; don't save history for undo-tree. I don't need it
   (setq undo-tree-auto-save-history nil))
 
 (after! magit
+  ;; I like the traditional way of displaying magit status buffer than the doom way
   (setq magit-display-buffer-function 'magit-display-buffer-traditional))
+
+(after! org
+  ;; Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
+  (setq org-log-done t)
+  (setq org-log-into-drawer t)
+
+  (setq org-special-ctrl-k t)
+  ;; Enable speed keys when cursor is placed on any part leading aesterisks for a headline
+  (setq org-use-speed-commands
+        (lambda ()
+          (and (looking-at org-outline-regexp)
+               (looking-back "^\**")))))
+
+;; configure counsel-outline-display-style so that only the headline title is
+;; inserted into the link, instead of its full path within the document.
+(after! counsel
+  (setq counsel-outline-display-style 'title))
+
+;; Enable counsel-projectile-mode by default
+(use-package! counsel-projectile
+  :hook (counsel-mode . counsel-projectile-mode)
+  :config
+  ;; configure many counsel based commands to use rg
+  (setq counsel-grep-base-command "rg -M 120 --line-number --smart-case --with-filename --color never --no-heading %s %s"
+        ;; add `--follow' option to allow search through symbolic links
+        counsel-rg-base-command "rg -M 120 --line-number --smart-case --with-filename --color never --follow --no-heading %s"
+        ;; Use ripgrep for counsel-git
+        counsel-git-cmd "rg --files"))
+
+;; enable hungry-delete-mode globally
+(use-package! hungry-delete
+  :config
+  (add-hook! 'after-init-hook #'global-hungry-delete-mode))
+
+;; my custom mappings go here
+(bind-keys
+ ("C-x C-b" . ibuffer-jump)
+ ("C-x C-d" . dired-jump))
+
+;; backups configuration
+;; Also backup files which are version controlled
+(setq vc-make-backup-files t
+      kept-new-versions 10)
+
+;; make emacs auto-refresh all buffers when files have changed on the disk
+(global-auto-revert-mode t)
+(setq auto-revert-verbose nil)
+
+;; TODO: bind this to a key in doom-emacs
+(defun rag/reopen-killed-file ()
+  "Reopen the most recently killed file, if one exists."
+  (interactive)
+  (if killed-file-list
+      (find-file (pop killed-file-list))
+    (message "No recently killed file found to reopen.")))
+
+;; use ibuffer-jump instead of ibuffer
+(map! (:leader
+        (:prefix-map ("b" . "buffer")
+          (:desc "ibuffer jump" "i" #'ibuffer-jump))))
