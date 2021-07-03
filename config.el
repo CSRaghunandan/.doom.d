@@ -19,8 +19,8 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Iosevka SS08" :size 12)
-       doom-variable-pitch-font (font-spec :family "Iosevka SS08" :size 13))
+(setq doom-font (font-spec :family "Iosevka SS08 Semibold" :size 12)
+       doom-variable-pitch-font (font-spec :family "Iosevka SS08 Semibold" :size 13))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -143,7 +143,9 @@
   ;; I like the traditional way of displaying magit status buffer than the doom way
   (setq magit-display-buffer-function 'magit-display-buffer-traditional))
 
-(after! org
+(use-package! org
+  :hook (org-mode . auto-fill-mode)
+  :config
   ;; Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
   (setq org-log-done t)
   (setq org-log-into-drawer t)
