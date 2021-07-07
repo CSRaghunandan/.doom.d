@@ -144,7 +144,8 @@
   (setq magit-display-buffer-function 'magit-display-buffer-traditional))
 
 (use-package! org
-  :hook (org-mode . auto-fill-mode)
+  :hook ((org-mode . auto-fill-mode)
+         (org-mode . display-fill-column-indicator-mode))
   :config
   ;; Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
   (setq org-log-done t)
@@ -204,3 +205,7 @@
 (map! (:leader
         (:prefix-map ("b" . "buffer")
           (:desc "ibuffer jump" "i" #'ibuffer-jump))))
+
+;; enable fill-column indicator for all programming mode files and config
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(add-hook 'conf-mode-hook #'display-fill-column-indicator-mode)
