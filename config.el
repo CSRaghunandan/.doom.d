@@ -211,6 +211,15 @@ Emacs session."
           (find-file file)))
     (error "No recently-killed files to reopen")))
 
+(use-package beginend
+  :hook (ivy-occur-grep-mode . beginend-ivy-occur-mode)
+  :config
+  (beginend-define-mode ivy-occur-mode
+    (progn
+      (ivy-occur-next-line 4))
+    (progn
+      (ivy-occur-previous-line 1))))
+
 ;; my custom bindings
 (map! (:leader
        (:prefix-map ("b" . "buffer")
@@ -220,7 +229,8 @@ Emacs session."
       (("C-x C-b"  #'ibuffer-jump)
        ("C-x C-d"  #'dired-jump)))
 
-;; my custom hooks
+;; my custom hooks to run minor-modes
 (add-hook! (prog-mode conf-mode text-mode) #'display-fill-column-indicator-mode)
 (add-hook! (org-mode text-mode markdown-mode) #'auto-fill-mode)
 (add-hook! 'doom-first-buffer-hook #'global-hungry-delete-mode)
+(add-hook! 'doom-first-buffer-hook #'beginend-global-mode)

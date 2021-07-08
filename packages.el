@@ -56,3 +56,6 @@
 
 ;; delete all white spaces in one fell swoop
 (package! hungry-delete)
+
+;; beginend: move to the beginning and end of buffers smartly
+(package! beginend)
