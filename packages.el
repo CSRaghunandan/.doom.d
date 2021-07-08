@@ -59,3 +59,6 @@
 
 ;; beginend: move to the beginning and end of buffers smartly
 (package! beginend)
+
+;; sort files in dired listing using a hydra
+(package! dired-quick-sort)

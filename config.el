@@ -339,6 +339,10 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
        ("C-x C-d"  #'dired-jump)))
 (map! :map ibuffer-mode-map
       :localleader "h" #'hydra-ibuffer-main/body)
+(use-package! dired-quick-sort
+  :config (map! :map dired-mode-map
+                :localleader "s" #'hydra-dired-quick-sort/body))
+
 
 ;; my custom hooks to run minor-modes
 (add-hook! (prog-mode conf-mode text-mode) #'display-fill-column-indicator-mode)
