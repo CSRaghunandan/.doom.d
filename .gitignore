@@ -2,3 +2,4 @@
 .idea
 *.log
 tmp/
+flycheck_init.el
