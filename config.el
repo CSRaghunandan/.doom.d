@@ -199,11 +199,24 @@
       (find-file (pop killed-file-list))
     (message "No recently killed file found to reopen.")))
 
+(defun rag/reopen-killed-file-fancy ()
+  "Pick a file to revisit from a list of files killed during this
+Emacs session."
+  (interactive)
+  (if killed-file-list
+      (let ((file (completing-read "Reopen killed file: " killed-file-list
+                                   nil nil nil nil (car killed-file-list))))
+        (when file
+          (setq killed-file-list (cl-delete file killed-file-list :test #'equal))
+          (find-file file)))
+    (error "No recently-killed files to reopen")))
+
 ;; my custom bindings
 (map! (:leader
        (:prefix-map ("b" . "buffer")
         (:desc "ibuffer jump" "i" #'ibuffer-jump)
-        (:desc "reopen closed file" "R" #'rag/reopen-killed-file)))
+        (:desc "reopen closed file" "y" #'rag/reopen-killed-file)
+        (:desc "reopen killed file fancy" "Y" #'rag/reopen-killed-file-fancy)))
       (("C-x C-b"  #'ibuffer-jump)
        ("C-x C-d"  #'dired-jump)))
 
