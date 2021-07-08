@@ -328,6 +328,9 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
     ("/" ibuffer-filter-disable "disable")
     ("b" hydra-ibuffer-main/body "back" :color blue)))
 
+(use-package gitattributes-mode
+  :defer t)
+
 ;; my custom bindings
 ;; TODO: add bindings for pop-to-mark-command
 (map! (:leader

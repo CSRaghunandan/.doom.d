@@ -62,3 +62,6 @@
 
 ;; sort files in dired listing using a hydra
 (package! dired-quick-sort)
+
+;; major-mode for working with .gitattributes file
+(package! gitattributes-mode)
