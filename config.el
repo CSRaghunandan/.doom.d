@@ -211,6 +211,11 @@ Emacs session."
           (find-file file)))
     (error "No recently-killed files to reopen")))
 
+(defun rag/clear-kill-ring ()
+  "clears the kill ring"
+  (interactive)
+  (progn (setq kill-ring nil) (garbage-collect)))
+
 (use-package beginend
   :hook (ivy-occur-grep-mode . beginend-ivy-occur-mode)
   :config
