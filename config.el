@@ -144,8 +144,6 @@
   (setq magit-display-buffer-function 'magit-display-buffer-traditional))
 
 (use-package! org
-  :hook ((org-mode . auto-fill-mode)
-         (org-mode . display-fill-column-indicator-mode))
   :config
   ;; Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
   (setq org-log-done t)
@@ -174,16 +172,6 @@
         ;; Use ripgrep for counsel-git
         counsel-git-cmd "rg --files"))
 
-;; enable hungry-delete-mode globally
-(use-package! hungry-delete
-  :config
-  (add-hook! 'after-init-hook #'global-hungry-delete-mode))
-
-;; my custom mappings go here
-(bind-keys
- ("C-x C-b" . ibuffer-jump)
- ("C-x C-d" . dired-jump))
-
 ;; backups configuration
 ;; Also backup files which are version controlled
 (setq vc-make-backup-files t
@@ -193,7 +181,17 @@
 (global-auto-revert-mode t)
 (setq auto-revert-verbose nil)
 
-;; TODO: bind this to a key in doom-emacs
+(defvar killed-file-list nil
+  "List of recently killed files.")
+
+(defun add-file-to-killed-file-list ()
+  "If buffer is associated with a file name, add that file to the
+`killed-file-list' when killing the buffer."
+  (when buffer-file-name
+    (push buffer-file-name killed-file-list)))
+
+(add-hook 'kill-buffer-hook #'add-file-to-killed-file-list)
+
 (defun rag/reopen-killed-file ()
   "Reopen the most recently killed file, if one exists."
   (interactive)
@@ -201,11 +199,15 @@
       (find-file (pop killed-file-list))
     (message "No recently killed file found to reopen.")))
 
-;; use ibuffer-jump instead of ibuffer
+;; my custom bindings
 (map! (:leader
-        (:prefix-map ("b" . "buffer")
-          (:desc "ibuffer jump" "i" #'ibuffer-jump))))
+       (:prefix-map ("b" . "buffer")
+        (:desc "ibuffer jump" "i" #'ibuffer-jump)
+        (:desc "reopen closed file" "R" #'rag/reopen-killed-file)))
+      (("C-x C-b"  #'ibuffer-jump)
+       ("C-x C-d"  #'dired-jump)))
 
-;; enable fill-column indicator for all programming mode files and config
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-(add-hook 'conf-mode-hook #'display-fill-column-indicator-mode)
+;; my custom hooks
+(add-hook! (prog-mode conf-mode text-mode) #'display-fill-column-indicator-mode)
+(add-hook! (org-mode text-mode markdown-mode) #'auto-fill-mode)
+(add-hook! 'doom-first-buffer-hook #'global-hungry-delete-mode)
