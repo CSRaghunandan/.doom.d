@@ -335,6 +335,11 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
   ;; also run flycheck when adding a new line so that we can detect errors faster
   (add-to-list 'flycheck-check-syntax-automatically 'new-line))
 
+(after! projectile
+  ;; kill all the project related files. The default behaviour is to kill ONLY
+  ;; files. The other temp buffers don't get killed
+  (setq projectile-kill-buffers-filter 'kill-all))
+
 ;; my custom bindings
 ;; TODO: add bindings for pop-to-mark-command
 (map! (:leader
@@ -353,6 +358,10 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
 
 ;; my custom hooks to run minor-modes
 (add-hook! (prog-mode conf-mode text-mode) #'display-fill-column-indicator-mode)
-(add-hook! (org-mode text-mode markdown-mode) #'auto-fill-mode)
+(add-hook! (org-mode prog-mode text-mode markdown-mode) #'auto-fill-mode)
 (add-hook! 'doom-first-buffer-hook #'global-hungry-delete-mode)
 (add-hook! 'doom-first-buffer-hook #'beginend-global-mode)
+
+;; my misc changes to variables
+;; make sure only to auto-fill in comments
+(setq comments-auto-fill-only-comments t)
