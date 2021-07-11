@@ -331,6 +331,10 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
 (use-package gitattributes-mode
   :defer t)
 
+(after! flycheck
+  ;; also run flycheck when adding a new line so that we can detect errors faster
+  (add-to-list 'flycheck-check-syntax-automatically 'new-line))
+
 ;; my custom bindings
 ;; TODO: add bindings for pop-to-mark-command
 (map! (:leader
