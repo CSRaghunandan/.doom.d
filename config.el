@@ -361,6 +361,7 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
 (add-hook! (org-mode prog-mode text-mode markdown-mode) #'auto-fill-mode)
 (add-hook! 'doom-first-buffer-hook #'global-hungry-delete-mode)
 (add-hook! 'doom-first-buffer-hook #'beginend-global-mode)
+(add-hook! 'doom-first-buffer-hook #'global-subword-mode)
 
 ;; my misc changes to variables
 ;; make sure only to auto-fill in comments
