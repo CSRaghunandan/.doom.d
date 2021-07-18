@@ -65,6 +65,11 @@
                         :box nil :weight 'bold
                         :inherit 'magit-branch-remote))
 
+  (set-face-attribute 'font-lock-type-face nil :weight 'bold)
+  (set-face-attribute 'font-lock-function-name-face nil :weight 'bold)
+  (set-face-attribute 'font-lock-builtin-face nil :weight 'bold)
+  (set-face-attribute 'font-lock-keyword-face nil :weight 'bold)
+
   ;; disable variable pitch fonts. I find them ugly
   (setq doom-variable-pitch-font nil))
 
@@ -141,7 +146,13 @@
 
 (after! magit
   ;; I like the traditional way of displaying magit status buffer than the doom way
-  (setq magit-display-buffer-function 'magit-display-buffer-traditional))
+  (setq magit-display-buffer-function 'magit-display-buffer-traditional)
+
+  ;; Refresh `magit-status' after saving a buffer
+  (add-hook 'after-save-hook #'magit-after-save-refresh-status)
+
+  ;; show counts in magit-refs
+  (setq magit-refs-show-commit-count 'all))
 
 (use-package! org
   :config
@@ -155,6 +166,12 @@
         (lambda ()
           (and (looking-at org-outline-regexp)
                (looking-back "^\**")))))
+
+(after! swiper
+  (setq swiper-goto-start-of-match t))
+
+(after! ivy
+  (setq ivy-action-wrap t))
 
 ;; configure counsel-outline-display-style so that only the headline title is
 ;; inserted into the link, instead of its full path within the document.
