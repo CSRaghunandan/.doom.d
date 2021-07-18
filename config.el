@@ -157,7 +157,8 @@
 (use-package! org
   :config
   ;; Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
-  (setq org-log-done t)
+  (setq org-log-done 'note)
+  (setq org-log-done-with-time t)
   (setq org-log-into-drawer t)
 
   (setq org-special-ctrl-k t)
