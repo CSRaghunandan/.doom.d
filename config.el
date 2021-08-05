@@ -384,3 +384,7 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
 ;; my misc changes to variables
 ;; make sure only to auto-fill in comments
 (setq comments-auto-fill-only-comments t)
+
+;; Horizontally scroll only the current line
+;; https://www.reddit.com/r/emacs/comments/6au45k/is_it_possible_to_truncate_long_lines_the_same/
+(setq auto-hscroll-mode 'current-line)
