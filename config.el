@@ -358,6 +358,8 @@ _t_: toggle    _h_: toggle hydra                 C-o: other win no-select
   ;; files. The other temp buffers don't get killed
   (setq projectile-kill-buffers-filter 'kill-all))
 
+(use-package systemd)
+
 ;; my custom bindings
 ;; TODO: add bindings for pop-to-mark-command
 (map! (:leader
