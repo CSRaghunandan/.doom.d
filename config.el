@@ -84,13 +84,6 @@
   ;; enable column number mode
   (column-number-mode)
 
-  ;; use ffip for detecting files in project
-  ;; This is needed as projectile as issues with symlinks for doom-modeline
-  (setq doom-modeline-project-detection 'ffip)
-
-  ;; use shorter method to display buffer filenames in doom-modeline
-  (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
-
   ;; show minor modes in mode-line, since minions is enabled, it will use
   ;; minions to display all the enabled minor-modes
   (setq doom-modeline-minor-modes t)
