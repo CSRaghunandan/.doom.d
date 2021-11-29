@@ -63,8 +63,5 @@
 ;; sort files in dired listing using a hydra
 (package! dired-quick-sort)
 
-;; major-mode for working with .gitattributes file
-(package! gitattributes-mode)
-
 ;; major-mode for working with systemd unit files
 (package! systemd)
